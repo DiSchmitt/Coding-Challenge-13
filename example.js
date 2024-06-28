@@ -1,8 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const productList = document.getElementById('product-list');
+    const loadingDiv = document.getElementById('loading');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    let products = []; // Array to hold product data
+    let currentIndex = 0; // Current index of the displayed product
 
-    // Task 1: Implement functionality to fetch product data from the API endpoint
-    setTimeout(() => {
+    // Fetch product data and populate productList
+    setTimeout(() => { // Introduce loading delay to better lee the loading state as per task 3
         fetch('https://raw.githubusercontent.com/DiSchmitt/Coding-Challenge-13/main/react-store-products.json')
             .then(response => {
                 if (!response.ok) {
@@ -11,29 +16,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                // Process the data
-                data.forEach(product => {
-                    const productDiv = document.createElement('div');
-                    productDiv.classList.add('product');
-                    // and display each product's name, image, price, and description on your webpage.
-                    productDiv.innerHTML = `
-                        <h2>${product.name}</h2>
-                        <img src="${product.image}" alt="${product.name}">
-                        <p><strong>Price:</strong> $${product.price}</p>
-                        <p>${product.description}</p>
-                    `;
+                products = data; // Store products array
+                displayProduct(currentIndex); // Display initial product
 
-                    productList.appendChild(productDiv);
-                });
-                // Remove loading indicator (if any)
-                document.getElementById('loading').style.display = 'none';
+                // Remove loading indicator
+                if (loadingDiv) {
+                    loadingDiv.style.display = 'none';
+                }
             })
-            // Task 2: Implement error handling to manage and inform the user if the product data fails to load with a user-friendly error message.
             .catch(error => {
                 console.error('Error fetching or parsing data:', error);
                 productList.innerHTML = '<p>Failed to load product data. Please try again later.</p>';
-                //remove loading state so that it disappears once the data is fully loaded or if an error occurs.
-                document.getElementById('loading').style.display = 'none';
+                // Remove loading indicator
+                if (loadingDiv) {
+                    loadingDiv.style.display = 'none';
+                }
             });
-    }, 2000); // Delay in milliseconds to help show loading state.
+    }, 2000); // 2000 milliseconds (2 seconds) loading delay
+
+    // Event listeners for navigation buttons
+    if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + products.length) % products.length;
+            displayProduct(currentIndex);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % products.length;
+            displayProduct(currentIndex);
+        });
+    }
+
+    // Function to display a product based on index
+    function displayProduct(index) {
+        const product = products[index];
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        // and display each product's name, image, price, and description on your webpage.
+        productDiv.innerHTML = `
+            <h2>${product.name}</h2>
+            <img src="${product.image}" alt="${product.name}">
+            <p><strong>Price:</strong> $${product.price}</p>
+            <p>${product.description}</p>
+        `;
+
+        // Clear previous product
+        productList.innerHTML = '';
+        // Append current product
+        productList.appendChild(productDiv);
+    }
 });

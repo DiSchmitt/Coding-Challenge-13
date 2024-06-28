@@ -5,14 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <style>
-        /* Add any necessary CSS styles */
+          #product-list {
+        text-align: center;
+    }
+    .product {
+        margin-bottom: 20px;
+    }
+    .navigation-btn {
+        margin-top: 10px;
+        display: inline-block;
+    }
+    .btn-container {
+        text-align: center; 
+        margin-top: 20px; 
+    }
     </style>
 </head>
 <body>
-    <!--Task 3:Introduce a loading state (loading happens to be the default it switches off of when the loading fails or suceeds.)-->
+    <!--Loading state will be default that is switched off of when loading is completed-->
     <div id="loading">Loading...</div>
     <div id="product-list">
         <!-- Product items will be dynamically added here -->
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="btn-container">
+        <button id="prev-btn" class="navigation-btn">Previous</button>
+        <button id="next-btn" class="navigation-btn">Next</button>
     </div>
 
     <script src="example.js"></script>
