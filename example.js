@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const productList = document.getElementById('product-list');
 
-    fetch('react-store-products.json')  // Adjust path as needed
+    fetch('https://raw.githubusercontent.com/DiSchmitt/Coding-Challenge-13/main/react-store-products.json') 
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
