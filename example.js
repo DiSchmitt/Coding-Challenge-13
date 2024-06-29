@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0; // Current index of the displayed product
 
     // Fetch product data and populate productList
-    setTimeout(() => { // Introduce loading delay to better lee the loading state as per task 3
+    setTimeout(() => {
         fetch('https://raw.githubusercontent.com/DiSchmitt/Coding-Challenge-13/main/react-store-products.json')
             .then(response => {
                 if (!response.ok) {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 products = data; // Store products array
                 displayProduct(currentIndex); // Display initial product
 
-                // Remove loading indicator
+                // Remove loading indicator if sucessful load
                 if (loadingDiv) {
                     loadingDiv.style.display = 'none';
                 }
@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error fetching or parsing data:', error);
                 productList.innerHTML = '<p>Failed to load product data. Please try again later.</p>';
-                // Remove loading indicator
+                // Remove loading indicator if failed load
                 if (loadingDiv) {
                     loadingDiv.style.display = 'none';
                 }
             });
-    }, 2000); // 2000 milliseconds (2 seconds) loading delay
+    }, 1000); // 2 second loading delay to better display loading state
 
     // Event listeners for navigation buttons
     if (prevBtn && nextBtn) {
@@ -47,12 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to display a product based on index
+    // Function to display a product in html
     function displayProduct(index) {
         const product = products[index];
         const productDiv = document.createElement('div');
         productDiv.classList.add('product');
-        // and display each product's name, image, price, and description on your webpage.
         productDiv.innerHTML = `
             <h2>${product.name}</h2>
             <img src="${product.image}" alt="${product.name}">
